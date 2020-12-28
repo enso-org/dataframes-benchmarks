@@ -1,0 +1,59 @@
+from Base import all
+from Table import all
+
+type Data citations meters
+
+measure = label -> ~act ->
+        x1 = System.nano_time
+        result = act
+        x2 = System.nano_time
+        duration = x2 - x1
+        fmt = (duration / 1000000).format "%.2f"
+        IO.println (label + ": " + fmt + "ms")
+        result
+
+load_data =
+          citations = (Enso_Project.data / "Parking_Citations_in_FY_2018.csv") . read_csv
+          meters = (Enso_Project.data / "LADOT_Metered_Parking_Inventory___Policies.csv") . read_csv
+          Data citations meters
+
+count_missing_meters citations =
+                     isna = citations.at "Meter Id" . is_missing
+                     missing = citations.where isna . nrows
+                     missing
+
+fillna citations =
+       filled = citations.at "Meter Id" . fill_missing ""
+       citations.set "Meter Id" filled
+
+join citations meters =
+     indexed = meters.set_index "SpaceID"
+     joined = citations.join indexed on="Meter Id"
+     joined
+
+count_having_meters joined =
+                     nonmissing = joined.where (joined.at "Meter Id" != "")
+                     nonmissing.nrows
+
+count_broadway joined =
+                mask = joined.at "BlockFace" . fill_missing "" . ends_with "BROADWAY"
+                filtered = joined.where mask
+                filtered.nrows
+
+main =
+     IO.println "Hello, World!"
+     data = here.measure "loading" here.load_data
+     case data of
+          Data citations meters ->
+               missing = here.measure "filter1" (here.count_missing_meters citations)
+               IO.println missing
+
+               citations2 = here.measure "fill_na" (here.fillna citations)
+
+               joined = here.measure "joining" (here.join citations2 meters)
+
+               nonmissing = here.measure "filter2" (here.count_having_meters joined)
+               IO.println nonmissing
+
+               broadway_tickets = here.measure "map_and_filter1" (here.count_broadway joined)
+               IO.println broadway_tickets
