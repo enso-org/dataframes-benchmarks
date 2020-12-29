@@ -3,13 +3,18 @@ from Table import all
 
 type Data citations meters
 
+debug_mode = False
+
+print_debug ~stmt =
+            if here.debug_mode then IO.println stmt else Nothing
+
 measure = label -> ~act ->
         x1 = System.nano_time
         result = act
         x2 = System.nano_time
         duration = x2 - x1
         fmt = (duration / 1000000).format "%.2f"
-        IO.println (label + ": " + fmt + "ms")
+        if here.debug_mode then IO.println (label + ": " + fmt + "ms") else IO.println fmt
         result
 
 load_data =
@@ -41,19 +46,19 @@ count_broadway joined =
                 filtered.nrows
 
 main =
-     IO.println "Hello, World!"
+     here.print_debug "Starting benchmarks"
      data = here.measure "loading" here.load_data
      case data of
           Data citations meters ->
                missing = here.measure "filter1" (here.count_missing_meters citations)
-               IO.println missing
+               here.print_debug missing
 
                citations2 = here.measure "fill_na" (here.fillna citations)
 
                joined = here.measure "joining" (here.join citations2 meters)
 
                nonmissing = here.measure "filter2" (here.count_having_meters joined)
-               IO.println nonmissing
+               here.print_debug nonmissing
 
                broadway_tickets = here.measure "map_and_filter1" (here.count_broadway joined)
-               IO.println broadway_tickets
+               here.print_debug broadway_tickets

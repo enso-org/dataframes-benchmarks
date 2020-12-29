@@ -2,6 +2,12 @@ import pandas as pd
 CITATIONS_FILE = "../data/Parking_Citations_in_FY_2018.csv"
 METERS_FILE = "../data/LADOT_Metered_Parking_Inventory___Policies.csv"
 
+debug_mode = False
+
+def print_debug(stmt):
+    if debug_mode:
+        print(stmt)
+
 from time import perf_counter
 def timed(name):
     def decorator(func):
@@ -10,7 +16,10 @@ def timed(name):
             result = func(*args, **kwargs)
             end = perf_counter()
             diff_ms = (end-start)*1000.0
-            print(f"{name}: {diff_ms:.2f}ms")
+            if debug_mode:
+                print(f"{name}: {diff_ms:.2f}ms")
+            else:
+                print(f"{diff_ms:.2f}")
             return result
         return wrapped
     return decorator
@@ -56,23 +65,22 @@ def filterMonday(joined):
     return ticketsonMonday
 
 if __name__ == "__main__":
-    print("Starting benchmarks")
+    print_debug("Starting benchmarks")
 
     (citations, meters) = load_files()
 
     missing = count_missing_meters(citations)
-    print(missing)
+    print_debug(missing)
 
     fillna(citations)
 
     joined = join(citations, meters)
 
     nonmissing = count_having_meters(joined)
-    print(nonmissing)
+    print_debug(nonmissing)
 
     broadway_tickets = count_broadway(joined)
-    print(broadway_tickets)
+    print_debug(broadway_tickets)
 
     #monday_tickets = filterMonday(joined)
     #print(monday_tickets)
-
