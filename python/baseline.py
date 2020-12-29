@@ -26,7 +26,7 @@ def timed(name):
 
 @timed("loading")
 def load_files():
-    citations = pd.read_csv(CITATIONS_FILE)
+    citations = pd.read_csv(CITATIONS_FILE, low_memory=False)
     meters = pd.read_csv(METERS_FILE)
     return (citations, meters)
 
