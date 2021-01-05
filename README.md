@@ -30,6 +30,7 @@ the report, you can use [`poetry`](https://github.com/python-poetry/poetry/):
 ```
 # Go to the root directory of the repository and type:
 > poetry install
+> poetry shell # to enter the shell that uses poetry's virtual environment
 ```
 
 You can download the launcher for `0.1.2-rc.23` from the
@@ -44,6 +45,13 @@ benchmarks with:
 
 ```
 > ./run_benchmarks.py
+```
+
+If you are using `poetry`, make sure that you run the above command inside of
+`poetry shell` or otherwise use:
+
+```
+poetry run ./run_benchmarks.py
 ```
 
 The script will automatically download all input data and run the benchmarks,
