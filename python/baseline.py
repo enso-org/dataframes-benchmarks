@@ -32,7 +32,6 @@ def load_files():
 
 @timed("fill_na")
 def fillna(citations):
-    # we can implement this by map (x -> if x == null then fill else x)
     citations["Meter Id"] = citations["Meter Id"].fillna("")
 
 @timed("joining")
