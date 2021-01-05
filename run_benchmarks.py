@@ -25,8 +25,8 @@ if root_path != cwd:
 
 citations = "./data/Parking_Citations_in_FY_2018.csv"
 meters = "./data/LADOT_Metered_Parking_Inventory___Policies.csv"
-citations_url = "https://data.lacity.org/api/views/nma9-y7yc/rows.csv?accessType=DOWNLOAD"
-meters_url = "https://data.lacity.org/api/views/s49e-q6j2/rows.csv?accessType=DOWNLOAD"
+citations_url = "https://packages-luna.s3-us-west-2.amazonaws.com/dataframes-benchmark-data/Parking_Citations_in_FY_2018.csv"
+meters_url = "https://packages-luna.s3-us-west-2.amazonaws.com/dataframes-benchmark-data/LADOT_Metered_Parking_Inventory___Policies.csv"
 
 files = [(citations, citations_url), (meters, meters_url)]
 
