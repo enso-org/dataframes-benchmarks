@@ -57,12 +57,6 @@ def count_broadway(joined):
     filtered = joined[mask]
     return len(filtered)
 
-@timed("map_and_filter2")
-def filterMonday(joined):
-    mask = pd.to_datetime(joined["Issue Date"]).dt.weekday == 0
-    ticketsonMonday = len(joined[mask])
-    return ticketsonMonday
-
 if __name__ == "__main__":
     print_debug("Starting benchmarks")
 
@@ -80,6 +74,3 @@ if __name__ == "__main__":
 
     broadway_tickets = count_broadway(joined)
     print_debug(broadway_tickets)
-
-    #monday_tickets = filterMonday(joined)
-    #print(monday_tickets)
