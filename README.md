@@ -13,8 +13,9 @@ To run the benchmarks you need:
 
 - Python 3.7+ installed and available on your PATH as `python`.
 - `pandas` version `1.1.5`,
-- Enso engine and launcher, version `0.1.2-rc.23`, built from commit `efd66b98`,
-  with launcher `enso` executable on your PATH,
+- Enso engine and launcher, version `0.2.0`, built from commit
+  `d2df28bc43fcfee614fb31780cd46a59ebb16127`, with launcher `enso` executable on
+  your PATH,
 - `wget` on your PATH if you want the script to download input data
   automatically.
 
@@ -23,6 +24,11 @@ You can use [`pyenv`](https://github.com/pyenv/pyenv) to manage python versions:
 ```
 > pyenv install 3.7.9
 ```
+
+> If you want to use this Python version for processing the results in Jupyter
+> Notebook as described later, make sure that sqlite is properly set up. For
+> example, on Ubuntu you may need to `apt install libsqlite3-dev` before
+> installing Python.
 
 To install `pandas` and additional dependencies that are useful for generating
 the report, you can use [`poetry`](https://github.com/python-poetry/poetry/):
@@ -33,12 +39,11 @@ the report, you can use [`poetry`](https://github.com/python-poetry/poetry/):
 > poetry shell # to enter the shell that uses poetry's virtual environment
 ```
 
-You can download the launcher for `0.1.2-rc.23` from the
-[`enso-staging` repository](https://github.com/enso-org/enso-staging/releases/tag/enso-0.1.2-rc.23).
-After extracting it, you need to add it to your PATH. It will automatically
-install the engine when running the benchmarks for the first time (this will
-_not_ affect measurements, but if you want to ensure that it is preinstalled,
-you can type `enso install engine 0.1.2-rc.23` or `enso run .`).
+You can download just the launcher or the whole bundle for `0.2.0` from the
+[`enso` repository](https://github.com/enso-org/enso/releases/tag/enso-0.2.0).
+After extracting it, you need to add the launcher executable to your PATH. If
+you downloaded just the launcher, make sure that the engine is installed by
+running `enso install engine 0.2.0`.
 
 After ensuring that all the dependencies are installed, you can run the
 benchmarks with:
@@ -74,7 +79,7 @@ To prepare the report, first start Jupyter Notebook with:
 
 ```
 > cd report/
-> jupyter notebook
+> poetry run jupyter notebook
 ```
 
 Then you can open the notebook `Report.ipynb` and select
