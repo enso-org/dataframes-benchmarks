@@ -77,10 +77,18 @@ with open(enso_report, "w") as enso_file:
         for i in wrap(range(1, REPEATS + 1)):
             print(f"Running Python - {i}")
             result = subprocess.run(["python", "baseline.py"], cwd="./python/", stdout=subprocess.PIPE)
+            if result.returncode != 0:
+                print(result.stdout.decode("utf-8"))
+                print(f"Python returned non-zero exit code: {result.returncode}; the benchmark run has been cancelled.")
+                sys.exit(1)
             write_line(python_file, parse_output(result.stdout))
 
             print(f"Running Enso - {i}")
             result = subprocess.run(["enso", "run", "."], stdout=subprocess.PIPE)
+            if result.returncode != 0:
+                print(result.stdout.decode("utf-8"))
+                print(f"Enso returned non-zero exit code: {result.returncode}; the benchmark run has been cancelled.")
+                sys.exit(1)
             write_line(enso_file, parse_output(result.stdout))
 
 print("Finished")
